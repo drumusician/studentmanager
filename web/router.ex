@@ -21,7 +21,9 @@ defmodule Studentmanager.Router do
     get "/info", PageController, :info
     get "/info/:instrument", PageController, :info
 
-    resources "/users", UserController, only: [:index, :show, :new, :create]
+    resources "/users", UserController do
+      resources "/students", UserController, as: :student
+    end
   end
 
   # Other scopes may use custom stacks.

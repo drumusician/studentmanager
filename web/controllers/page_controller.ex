@@ -14,6 +14,6 @@ defmodule Studentmanager.PageController do
   end
 
   def info(conn, _params) do
-    render conn, "info.html", instrument: "nothing" 
+    render conn, "info.html", instrument: "nothing"
   end
 end
