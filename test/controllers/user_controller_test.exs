@@ -2,12 +2,14 @@ defmodule Studentmanager.UserControllerTest do
   use Studentmanager.ConnCase
 
   alias Studentmanager.User
+  
   @valid_attrs %{date_of_birth: "2010-04-17", email: "some content", gender: "some content", mobile: "some content", name: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, user_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing users"
+    |> Studentmanager.Auth.login(user)
+    assert html_response(conn, 200) =~ "Students"
   end
 
   test "renders form for new resources", %{conn: conn} do
@@ -24,18 +26,6 @@ defmodule Studentmanager.UserControllerTest do
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, user_path(conn, :create), user: @invalid_attrs
     assert html_response(conn, 200) =~ "New user"
-  end
-
-  test "shows chosen resource", %{conn: conn} do
-    user = Repo.insert! %User{}
-    conn = get conn, user_path(conn, :show, user)
-    assert html_response(conn, 200) =~ "Show user"
-  end
-
-  test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, user_path(conn, :show, -1)
-    end
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do

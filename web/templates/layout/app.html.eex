@@ -14,9 +14,20 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="#">Login</a></li>
+        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+          <a class="navbar-brand" href="#">Student Manager</a>
+          <ul class="nav navbar-nav">
+              <%= if @current_user do %>
+                <li class="nav-item"><%= link "Students", to: student_path(@conn, :index), class: "nav-link" %></li>
+              <% end %>
+          </ul>
+          <ul class="nav navbar-nav pull-right">
+            <%= if @current_user do %>
+              <li><a href='#'><%= @current_user.name %></a></li>
+              <li><%= link "Log Out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "navbar-text" %></li> 
+            <% else %>
+              <li><%= link "Login", to: session_path(@conn, :new)  %></li>
+            <% end %>
           </ul>
         </nav>
         <span class="logo"></span>
@@ -26,7 +37,7 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <main role="main">
-        <%= render @view_module, @view_template, assigns %>
+      <%= render @view_module, @view_template, assigns %>
       </main>
 
     </div> <!-- /container -->

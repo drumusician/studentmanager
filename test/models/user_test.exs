@@ -1,5 +1,6 @@
 defmodule Studentmanager.UserTest do
   use Studentmanager.ModelCase
+  import Ecto.Date
 
   alias Studentmanager.User
 

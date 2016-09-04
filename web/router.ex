@@ -7,6 +7,7 @@ defmodule Studentmanager.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Studentmanager.Auth, repo: Studentmanager.Repo
   end
 
   pipeline :api do
@@ -14,20 +15,21 @@ defmodule Studentmanager.Router do
   end
 
   scope "/", Studentmanager do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser 
 
     get "/", PageController, :index
     get "/about", PageController, :about
     get "/info", PageController, :info
     get "/info/:instrument", PageController, :info
 
-    resources "/users", UserController do
-      resources "/students", UserController, as: :student
-    end
-  end
+    resources "/students", StudentController
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Studentmanager do
-  #   pipe_through :api
-  # end
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
+  end
+  
+  scope "/admin", Studentmanager do
+    pipe_through :browser
+
+    resources "/users", UserController
+  end
 end

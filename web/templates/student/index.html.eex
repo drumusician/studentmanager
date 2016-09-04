@@ -1,0 +1,30 @@
+<h2>Students</h2>
+<p>
+    <%= link "Add new student", to: student_path(@conn, :new) %>
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date of birth</th>
+      <th>Gender</th>
+      <th>Email</th>
+      <th>Mobile</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user <- @students do %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.date_of_birth %></td>
+      <td><%= user.gender %></td>
+      <td><%= user.email %></td>
+      <td><%= user.mobile %></td>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

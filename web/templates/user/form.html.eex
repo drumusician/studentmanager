@@ -12,6 +12,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :password, class: "control-label" %>
+    <%= password_input f, :password, class: "form-control" %>
+    <%= error_tag f, :password %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :date_of_birth, class: "control-label" %>
     <%= date_select f, :date_of_birth, class: "form-control" %>
     <%= error_tag f, :date_of_birth %>

@@ -1,5 +1,6 @@
 defmodule Studentmanager.UserController do
   use Studentmanager.Web, :controller
+  plug :authenticate when action in [:index, :show]
 
   alias Studentmanager.User
 
@@ -16,11 +17,12 @@ defmodule Studentmanager.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(%User{}, user_params)
+    changeset = User.registration_changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
-      {:ok, _user} ->
+      {:ok, user} ->
         conn
+        |> Studentmanager.Auth.login(user)
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
       {:error, changeset} ->
@@ -41,7 +43,7 @@ defmodule Studentmanager.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Repo.get!(User, id)
-    changeset = User.changeset(user, user_params)
+    changeset = User.registration_changeset(user, user_params)
 
     case Repo.update(changeset) do
       {:ok, user} ->
@@ -63,5 +65,16 @@ defmodule Studentmanager.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  defp authenticate(conn, _opts) do
+    if conn.assigns.current_user do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must be logged in to access this page")
+      |> redirect(to: page_path(conn, :index))
+      |> halt()
+    end
   end
 end
