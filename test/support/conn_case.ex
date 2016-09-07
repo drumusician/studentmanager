@@ -26,6 +26,7 @@ defmodule Studentmanager.ConnCase do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Studentmanager.Router.Helpers
+      import Studentmanager.TestHelpers
 
       # The default endpoint for testing
       @endpoint Studentmanager.Endpoint

@@ -2,13 +2,18 @@ defmodule Studentmanager.StudentControllerTest do
   use Studentmanager.ConnCase
   alias Studentmanager.User
   use ExUnit.Case
+  require IEx
+
+  setup do
+    teacher = insert_teacher(name: "leraar")
+    conn = assign(conn(), :current_user, teacher)
+    {:ok, conn: conn, teacher: teacher}
+  end
 
   test "Show only students for currently logged in teacher on index", %{conn: conn} do
-    teacher = %User{name: "Teacher", id: 12, password: "supersecret"}
-    Studentmanager.Auth.login(conn, teacher)
-    conn = fetch_session(conn)
+    # student = insert_student(name: "student", email: "student_email")
+    IEx.pry
     conn = get conn, student_path(conn, :index) 
-    conn.assign(:current_user, teacher)
     assert html_response(conn, 200) =~ "Students"
   end
 
