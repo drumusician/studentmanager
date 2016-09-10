@@ -7,8 +7,8 @@
 -define(INFO(Fmt,Args), io:format(Fmt,Args)).
 
 %% Unpack or upgrade to a new tar.gz release
-main(["unpack", RelName, NameType, NodeName, Cookie, VersionArg]) ->
-    TargetNode = start_distribution(NameType, NodeName, Cookie),
+main(["unpack", RelName, NameTypeArg, NodeName, Cookie, VersionArg]) ->
+    TargetNode = start_distribution(NodeName, NameTypeArg, Cookie),
     WhichReleases = which_releases(TargetNode),
     Version = parse_version(VersionArg),
     case proplists:get_value(Version, WhichReleases) of
@@ -35,8 +35,8 @@ main(["unpack", RelName, NameType, NodeName, Cookie, VersionArg]) ->
         permanent ->
             ?INFO("Release ~s is already installed, and set permanent.~n",[Version])
     end;
-main(["install", RelName, NameType, NodeName, Cookie, VersionArg]) ->
-    TargetNode = start_distribution(NameType, NodeName, Cookie),
+main(["install", RelName, NameTypeArg, NodeName, Cookie, VersionArg]) ->
+    TargetNode = start_distribution(NodeName, NameTypeArg, Cookie),
     WhichReleases = which_releases(TargetNode),
     Version = parse_version(VersionArg),
     case proplists:get_value(Version, WhichReleases) of
@@ -81,7 +81,8 @@ install_and_permafy(TargetNode, RelName, Vsn) ->
             ?INFO("ERROR: release_handler:check_install_release failed: ~p~n",[Reason]),
             erlang:halt(3)
     end,
-    case rpc:call(TargetNode, release_handler, install_release, [Vsn], ?TIMEOUT) of
+    case rpc:call(TargetNode, release_handler, install_release,
+                  [Vsn, [{update_paths, true}]], ?TIMEOUT) of
         {ok, _, _} ->
             ?INFO("Installed Release: ~s~n", [Vsn]),
             permafy(TargetNode, RelName, Vsn),
@@ -92,7 +93,18 @@ install_and_permafy(TargetNode, RelName, Vsn) ->
                     [io_lib:format("* ~s\t~s~n",[V,S]) ||  {V,S} <- which_releases(TargetNode)]),
             ?INFO("Installed versions:~n~s", [VerList]),
             ?INFO("ERROR: Unable to revert to '~s' - not installed.~n", [Vsn]),
-            erlang:halt(2)
+            erlang:halt(2);
+        %% As described in http://erlang.org/doc/man/appup.html,
+        %% when executing a relup containing soft_purge instructions:
+        %%     If the value is soft_purge, release_handler:install_release/1
+        %%     returns {error, {old_processes, Mod}}
+        {error, {old_processes, Mod}} ->
+            ?INFO("ERROR: unable to install '~s' - old processes still running code from ~p~n",
+                  [Vsn, Mod]),
+            erlang:halt(3);
+        {error, InstallFailedReason} ->
+            ?INFO("ERROR: release_handler:install_release failed: ~p~n", [InstallFailedReason]),
+            erlang:halt(3)
     end.
 
 permafy(TargetNode, RelName, Vsn) ->
@@ -112,12 +124,9 @@ print_existing_versions(TargetNode) ->
             ||  {V,S} <- which_releases(TargetNode) ]),
     ?INFO("Installed versions:~n~s", [VerList]).
 
-start_distribution(NameType, NodeName, Cookie) ->
+start_distribution(NodeName, NameTypeArg, Cookie) ->
     MyNode = make_script_node(NodeName),
-    {ok, _Pid} = case NameType of
-      "-sname" -> net_kernel:start([MyNode, shortnames]);
-      "-name"  -> net_kernel:start([MyNode, longnames])
-    end,
+    {ok, _Pid} = net_kernel:start([MyNode, get_name_type(NameTypeArg)]),
     erlang:set_cookie(node(), list_to_atom(Cookie)),
     TargetNode = list_to_atom(NodeName),
     case {net_kernel:connect_node(TargetNode),
@@ -135,3 +144,12 @@ start_distribution(NameType, NodeName, Cookie) ->
 make_script_node(Node) ->
     [Name, Host] = string:tokens(Node, "@"),
     list_to_atom(lists:concat([Name, "_upgrader_", os:getpid(), "@", Host])).
+
+%% get name type from arg
+get_name_type(NameTypeArg) ->
+  case NameTypeArg of
+    "-sname" ->
+      shortnames;
+    _ ->
+      longnames
+  end.

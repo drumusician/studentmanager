@@ -1,4 +1,6 @@
-ExUnit.configure(exclude: [pending: true])
+ExUnit.configure(
+  exclude: [pending: true],
+  async: true)
 
 ExUnit.start
 

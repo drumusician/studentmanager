@@ -1,8 +1,7 @@
 defmodule Studentmanager.StudentControllerTest do
   use Studentmanager.ConnCase
   alias Studentmanager.User
-  use ExUnit.Case
-  require IEx
+  use ExUnit.Case, async: true
 
   setup do
     teacher = insert_teacher(name: "leraar")
@@ -10,11 +9,11 @@ defmodule Studentmanager.StudentControllerTest do
     {:ok, conn: conn, teacher: teacher}
   end
 
-  test "Show only students for currently logged in teacher on index", %{conn: conn} do
-    # student = insert_student(name: "student", email: "student_email")
-    IEx.pry
+  test "Show only students for currently logged in teacher on index", %{conn: conn, teacher: teacher} do
+    student = insert_student(teacher, name: "student", email: "student_email")
     conn = get conn, student_path(conn, :index) 
     assert html_response(conn, 200) =~ "Students"
+    assert html_response(conn, 200) =~ "#{student.email}"
   end
 
   @tag :pending

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Studentmanager | Manage your students with ease!</title>
+    <title>Studentmanager V2.0 | Manage your students with ease!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 

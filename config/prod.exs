@@ -13,10 +13,11 @@ use Mix.Config
 # which you typically run after static files are built.
 config :studentmanager, Studentmanager.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80],
+  url: [host: "localhost", port: 80],
   cache_static_manifest: "priv/static/manifest.json",
   root: ".",
-  server: true
+  server: true,
+  version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info

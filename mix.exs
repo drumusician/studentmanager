@@ -3,7 +3,7 @@ defmodule Studentmanager.Mixfile do
 
   def project do
     [app: :studentmanager,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -38,7 +38,7 @@ defmodule Studentmanager.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.5"},
-     {:exrm, "~> 1.0.8"}]
+     {:distillery, "~> 0.9"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
