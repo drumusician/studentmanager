@@ -18,27 +18,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :date_of_birth, class: "control-label" %>
-    <%= date_select f, :date_of_birth, class: "form-control" %>
-    <%= error_tag f, :date_of_birth %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :gender, class: "control-label" %>
-    <%= text_input f, :gender, class: "form-control" %>
-    <%= error_tag f, :gender %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :email, class: "control-label" %>
     <%= text_input f, :email, class: "form-control" %>
     <%= error_tag f, :email %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :mobile, class: "control-label" %>
-    <%= text_input f, :mobile, class: "form-control" %>
-    <%= error_tag f, :mobile %>
   </div>
 
   <div class="form-group">

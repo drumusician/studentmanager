@@ -21,6 +21,8 @@ defmodule Studentmanager.Router do
     get "/about", PageController, :about
     get "/info", PageController, :info
     get "/info/:instrument", PageController, :info
+    
+    get "register", UserController, :new
 
     resources "/students", StudentController
 

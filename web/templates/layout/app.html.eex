@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Studentmanager V2.0 | Manage your students with ease!</title>
+    <title>Studentmanager | Manage your students with ease!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -15,11 +15,11 @@
     <div class="container">
       <header class="header">
         <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
-          <a class="navbar-brand" href="#">Student Manager</a>
+          <a class="navbar-brand" href="/">Student Manager</a>
           <ul class="nav navbar-nav">
-              <%= if @current_user do %>
-                <li class="nav-item"><%= link "Students", to: student_path(@conn, :index), class: "nav-link" %></li>
-              <% end %>
+            <%= if @current_user do %>
+              <li><%= link "Students", to: student_path(@conn, :index) %></li>
+            <% end %>
           </ul>
           <ul class="nav navbar-nav pull-right">
             <%= if @current_user do %>
@@ -27,6 +27,7 @@
               <li><%= link "Log Out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "navbar-text" %></li> 
             <% else %>
               <li><%= link "Login", to: session_path(@conn, :new)  %></li>
+              <li><%= link "Register", to: user_path(@conn, :new)  %></li>
             <% end %>
           </ul>
         </nav>

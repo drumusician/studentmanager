@@ -24,11 +24,6 @@
 </div>
 
 <div class="form-group">
-    <%= hidden_input f, :teacher_id, class: "form-control", value: @current_user.id %>
-    <%= error_tag f, :teacher_id %>
-</div>
-
-<div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
 </div>
 <% end %>

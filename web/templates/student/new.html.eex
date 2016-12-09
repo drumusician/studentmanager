@@ -1,8 +1,7 @@
 <h2>Add new Student</h2>
 
 <%= render "form.html", changeset: @changeset,
-action: student_path(@conn, :create),
-current_user: @conn.assigns.current_user %>
+action: student_path(@conn, :create)%>
 
 
 <%= link "Back", to: student_path(@conn, :index) %>

@@ -6,21 +6,27 @@ defmodule Studentmanager.StudentController do
   plug :scrub_params, "user" when action in [:create, :update]
 
   def index(conn,_params) do
-    teacher_id = conn.assigns.current_user.id
+    teacher = conn.assigns.current_user
     query = from u in User,
-      where: u.teacher_id == ^teacher_id
+      where: u.teacher_id == ^teacher.id
     students = Repo.all(query)
     render(conn, "index.html", students: students)
   end
 
 
   def new(conn, _params) do
-    changeset = User.changeset(%User{})
+    changeset =
+    conn.assigns.current_user
+    |> build_assoc(:students)
+    |> User.new_student_changeset()
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => student_params}) do
-    changeset = User.new_student_changeset(%User{}, student_params)
+    changeset =
+      conn.assigns.current_user
+      |> build_assoc(:students)
+      |> User.new_student_changeset(student_params)
 
     case Repo.insert(changeset) do
       {:ok, _student} ->

@@ -20,10 +20,6 @@ defmodule Studentmanager.User do
   @required_fields ~w(name)
   @optional_fields ~w(date_of_birth password gender email mobile)
 
-  def age do
-    "Hallo"
-  end
-
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
