@@ -4,11 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Date of birth</th>
-      <th>Gender</th>
       <th>Email</th>
-      <th>Mobile</th>
-
       <th></th>
     </tr>
   </thead>
@@ -16,10 +12,7 @@
 <%= for user <- @users do %>
     <tr>
       <td><%= user.name %></td>
-      <td><%= user.date_of_birth %></td>
-      <td><%= user.gender %></td>
       <td><%= user.email %></td>
-      <td><%= user.mobile %></td>
 
       <td class="text-right">
         <%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %>

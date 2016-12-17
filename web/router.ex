@@ -21,14 +21,15 @@ defmodule Studentmanager.Router do
     get "/about", PageController, :about
     get "/info", PageController, :info
     get "/info/:instrument", PageController, :info
-    
-    get "register", UserController, :new
 
+    get "register", UserController, :new
+    get "/my_account", ProfileController, :show
+
+    resources "/profiles", ProfileController
     resources "/students", StudentController
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
-  
   scope "/admin", Studentmanager do
     pipe_through :browser
 

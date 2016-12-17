@@ -1,0 +1,4 @@
+<h2>Please create your profile!</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: profile_path(@conn, :create) %>

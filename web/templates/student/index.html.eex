@@ -6,22 +6,20 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Date of birth</th>
-      <th>Gender</th>
+      <th>Age</th>
       <th>Email</th>
-      <th>Mobile</th>
-
-      <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for user <- @students do %>
     <tr>
       <td><%= user.name %></td>
-      <td><%= user.date_of_birth %></td>
-      <td><%= user.gender %></td>
+      <td><%= age %></td>
       <td><%= user.email %></td>
-      <td><%= user.mobile %></td>
+      <td class="text-right">
+        <%= link "Show", to: student_path(@conn, :show, user), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: student_path(@conn, :edit, user), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: student_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
