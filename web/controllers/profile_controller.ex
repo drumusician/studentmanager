@@ -39,11 +39,11 @@ defmodule Studentmanager.ProfileController do
   def show(conn, _params) do
     user = Repo.get!(Studentmanager.User, conn.assigns.current_user.id)
     profile = Repo.get_by(Studentmanager.Profile, user_id: conn.assigns.current_user.id)
-    cond profile do
-      is_nil profile ->
-        render(conn, "show.html", user: user, profile: profile)
-      true ->
+    case profile do
+      nil  ->
         redirect(conn, to: profile_path(conn, :new))
+      _ ->
+        render(conn, "show.html", user: user, profile: profile)
     end
   end
 end
