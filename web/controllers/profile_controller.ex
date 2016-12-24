@@ -31,11 +31,25 @@ defmodule Studentmanager.ProfileController do
   end
 
   def edit(conn, %{"id" => id}) do
-    user = Repo.get!(Profile, id)
-    changeset = Profile.changeset(user)
-    render(conn, "edit.html", changeset: changeset)
-    
+    profile = Repo.get!(Profile, id)
+    changeset = Profile.changeset(profile)
+    render(conn, "edit.html", profile: profile, changeset: changeset)
   end
+
+  def update(conn, %{"id" => id, "profile" => profile_params}) do
+    profile = Repo.get!(Profile, id)
+    changeset = Profile.changeset(profile, profile_params)
+
+    case Repo.update(changeset) do
+      {:ok, profile} ->
+        conn
+        |> put_flash(:info, "Profile updated successfully.")
+        |> redirect(to: "/my_account")
+      {:error, changeset} ->
+        render(conn, "edit.html", profile: profile, changeset: changeset)
+    end
+  end
+
   def show(conn, _params) do
     user = Repo.get!(Studentmanager.User, conn.assigns.current_user.id)
     profile = Repo.get_by(Studentmanager.Profile, user_id: conn.assigns.current_user.id)

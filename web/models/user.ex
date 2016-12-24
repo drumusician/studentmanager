@@ -2,19 +2,19 @@ defmodule Studentmanager.User do
   use Studentmanager.Web, :model
 
   schema "users" do
-    field :name, :string
+    field :username, :string
     field :password, :string, virtual: true
     field :password_hash, :string
     field :email, :string
 
     belongs_to :teacher, Studentmanager.User
-    has_many :students, Studentmanager.User, foreign_key: :teacher_id
+    has_many :students, Studentmanager.User, foreign_key: :teacher_id, on_delete: :delete_all
     has_one :profile, Studentmanager.Profile, foreign_key: :user_id
 
     timestamps
   end
 
-  @required_fields ~w(name password)
+  @required_fields ~w(username password)
   @optional_fields ~w(email)
 
   def changeset(model, params \\ :empty) do
@@ -24,7 +24,7 @@ defmodule Studentmanager.User do
 
   def new_student_changeset(model, params \\ :empty) do
     model
-    |> cast(params, ~w(name email teacher_id), [])
+    |> cast(params, ~w(username email teacher_id), [])
   end
 
   def registration_changeset(model, params \\ :empty) do

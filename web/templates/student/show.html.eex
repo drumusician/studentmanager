@@ -1,33 +1,15 @@
-<h2>Show user</h2>
+<h2><%= @student.username %></h2>
 
 <ul>
 
   <li>
     <strong>Name:</strong>
-    <%= @user.name %>
-  </li>
-
-  <li>
-    <strong>Date of birth:</strong>
-    <%= @user.date_of_birth %>
-  </li>
-
-  <li>
-    <strong>Gender:</strong>
-    <%= @user.gender %>
+    <%= @student.username %>
   </li>
 
   <li>
     <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
-
-  <li>
-    <strong>Mobile:</strong>
-    <%= @user.mobile %>
+    <%= @student.email %>
   </li>
 
 </ul>
-
-<%= link "Edit", to: user_path(@conn, :edit, @user) %>
-<%= link "Back", to: user_path(@conn, :index) %>

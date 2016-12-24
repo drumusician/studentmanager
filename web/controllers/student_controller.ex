@@ -38,6 +38,11 @@ defmodule Studentmanager.StudentController do
     end
   end
 
+  def show(conn, %{"id" => id}) do
+    student = Repo.get!(User, id)
+    render(conn, "show.html", student: student)
+  end
+
   def delete(conn, %{"id" => id}) do
     student = Repo.get!(User, id)
 

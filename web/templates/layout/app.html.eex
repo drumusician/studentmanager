@@ -23,7 +23,7 @@
           </ul>
           <ul class="nav navbar-nav pull-right">
             <%= if @current_user do %>
-              <li><a href='/my_account'><%= @current_user.name %></a></li>
+              <li><a href='/my_account'><%= @current_user.username %></a></li>
               <li><%= link "Log Out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "navbar-text" %></li> 
             <% else %>
               <li><%= link "Login", to: session_path(@conn, :new)  %></li>

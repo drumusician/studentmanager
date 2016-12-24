@@ -23,7 +23,7 @@ defmodule Studentmanager.UserController do
       {:ok, user} ->
         conn
         |> Studentmanager.Auth.login(user)
-        |> put_flash(:info, "Hi #{user.name} we have created your account and you are now logged in!")
+        |> put_flash(:info, "Hi #{user.username} we have created your account and you are now logged in!")
         |> redirect(to: user_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
