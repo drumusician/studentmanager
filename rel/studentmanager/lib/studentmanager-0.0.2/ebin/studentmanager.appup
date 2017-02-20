@@ -1,9 +1,0 @@
-{"0.0.2",
- [{"0.0.1",
-   [{load_module,'Elixir.Studentmanager.Endpoint',[]},
-    {load_module,'Elixir.Studentmanager.Gettext',[]},
-    {load_module,'Elixir.Studentmanager.LayoutView',[]}]}],
- [{"0.0.1",
-   [{load_module,'Elixir.Studentmanager.Endpoint',[]},
-    {load_module,'Elixir.Studentmanager.Gettext',[]},
-    {load_module,'Elixir.Studentmanager.LayoutView',[]}]}]}.
